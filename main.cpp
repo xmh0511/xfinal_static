@@ -5,13 +5,14 @@ using namespace xfinal;
 
 int main(std::size_t argus_size, char const* arugs[])
 {
-	std::cout << argus_size << std::endl;
 	std::string port = "8080";
 	std::string root_path = "D:\\";
 	if (argus_size >= 3) {
 		port = arugs[1];
 		root_path = arugs[2];
 	}
+	std::cout << "set http port: " << port << std::endl;
+	std::cout << "set root path: " << root_path << std::endl;
 	http_server server(4);
 	server.set_chunked_size(3 * 1024 * 1024);
 	server.listen("0.0.0.0", port);

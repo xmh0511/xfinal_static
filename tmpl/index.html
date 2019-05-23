@@ -9,7 +9,6 @@
     <script src="/static/lib/uikit.min.js"></script>
 </head>
 <body style="padding-left:10px;">
-    {% if length(list.directors) != 0 %}
     {% for item in list.directors %}
     <a href="/nginx/@{item.path}">
         <div style="margin-bottom:3px;">
@@ -17,9 +16,6 @@
         </div>
     </a>
     {% endfor %}
-    {% else %}
-     <div>empty</div>
-    {% endif %}
 
     {% for item in list.files %}
     <a href="/nginx/@{item.path}">
@@ -28,5 +24,8 @@
         </div>
     </a>
     {% endfor %}
+    {% if length(list.directors) == 0 and  length(list.files) == 0 %}
+      <div>directory is empty </div>
+    {% endif %}
 </body>
 </html>

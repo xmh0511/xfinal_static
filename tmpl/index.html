@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/lib/css/uikit.min.css" />
+    <script src="/static/lib/jquery.js"></script>
+    <script src="/static/lib/uikit.min.js"></script>
+</head>
+<body style="padding-left:10px;">
+    {% for item in list.directors %}
+    <a href="/nginx/@{item.path}">
+        <div style="margin-bottom:3px;">
+            <span style="margin-right:3px;"><i class="uk-icon-folder-o"></i></span><span>@{item.name}</span>
+        </div>
+    </a>
+    {% endfor %}
+
+    {% for item in list.files %}
+    <a href="/nginx/@{item.path}">
+        <div style="margin-bottom:3px;">
+            <span style="margin-right:3px;"><i class="uk-icon-file"></i></span><span>@{item.name}</span>
+        </div>
+    </a>
+    {% endfor %}
+</body>
+</html>

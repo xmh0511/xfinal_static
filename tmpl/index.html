@@ -10,7 +10,7 @@
 </head>
 <body style="padding-left:10px;">
     {% for item in list.directors %}
-    <a href="/nginx/@{item.path}">
+    <a href="/nginx/@{urlencode(item.path)}">
         <div style="margin-bottom:3px;">
             <span style="margin-right:3px;"><i class="uk-icon-folder-o"></i></span><span>@{item.name}</span>
         </div>
@@ -18,7 +18,7 @@
     {% endfor %}
 
     {% for item in list.files %}
-    <a href="/nginx/@{item.path}">
+    <a href="/nginx/@{urlencode(item.path)}">
         <div style="margin-bottom:3px;">
             <span style="margin-right:3px;"><i class="uk-icon-file"></i></span><span>@{item.name}</span>
         </div>

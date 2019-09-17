@@ -1,12 +1,11 @@
 #include <iostream>
-#include "http_server.hpp"
-#include "client.hpp"
+#include "xfinal.hpp"
 using namespace xfinal;
 
 int main(std::size_t argus_size, char const* arugs[])
 {
 	std::string port = "8080";
-	std::string root_path = "E:\\";
+	std::string root_path = "D:\\";
 	if (argus_size >= 3) {
 		port = arugs[1];
 		root_path = arugs[2];
@@ -16,10 +15,14 @@ int main(std::size_t argus_size, char const* arugs[])
 	http_server server(4);
 	server.set_chunked_size(3 * 1024 * 1024);
 	server.listen("0.0.0.0", port);
-	server.router<GET>("/nginx/*", [&root_path](request& req,response& res) {
+	server.add_view_method("urlencode", 1, [](inja::Arguments& args)->json {
+		auto path = args.at(0)->get<std::string>();
+		return url_encode(path);
+		});
+	server.router<GET>("/nginx/*", [&root_path](request& req, response& res) {
 		auto url = req.url();
 		std::string path;
-		if (url == nonstd::string_view("/nginx")) 
+		if (url == nonstd::string_view("/nginx"))
 		{
 			path = "";
 		}
@@ -50,12 +53,12 @@ int main(std::size_t argus_size, char const* arugs[])
 					root["list"]["files"].push_back(it);
 				}
 			}
-			res.write_view("./tmpl/index.html", root,true,http_status::ok);
+			res.write_view("./tmpl/index.html", root, true, http_status::ok);
 		}
 		else {
 			res.write_file(utf8_to_gbk(fpath.string()), true);
 		}
-	});
+		});
 	server.run();
 	return 0;
 }

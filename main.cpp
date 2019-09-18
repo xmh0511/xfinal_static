@@ -34,31 +34,36 @@ int main(std::size_t argus_size, char const* arugs[])
 			json root;
 			root["list"]["directors"] = json::array();
 			root["list"]["files"] = json::array();
-			for (auto& iter : fs::directory_iterator(fpath)) {
-				json it;
-				bool is_direcotry = false;
-				if (fs::is_directory(iter)) {
-					it["is_directory"] = true;
-					is_direcotry = true;
+			try {
+				for (auto& iter : fs::directory_iterator(fpath)) {
+					json it;
+					bool is_direcotry = false;
+					if (fs::is_directory(iter)) {
+						it["is_directory"] = true;
+						is_direcotry = true;
+					}
+					else {
+						it["is_directory"] = false;
+					}
+					it["name"] = iter.path().filename();
+					it["path"] = fs::relative(iter.path(), root_path);
+					if (is_direcotry) {
+						root["list"]["directors"].push_back(it);
+					}
+					else {
+						root["list"]["files"].push_back(it);
+					}
 				}
-				else {
-					it["is_directory"] = false;
-				}
-				it["name"] = iter.path().filename();
-				it["path"] = fs::relative(iter.path(), root_path);
-				if (is_direcotry) {
-					root["list"]["directors"].push_back(it);
-				}
-				else {
-					root["list"]["files"].push_back(it);
-				}
+			}
+			catch (fs::filesystem_error const& ec) {
+				std::cout << "error: " << xfinal::utf8_to_gbk(ec.what()) << std::endl;
 			}
 			res.write_view("./tmpl/index.html", root, true, http_status::ok);
 		}
 		else {
 			res.write_file(utf8_to_gbk(fpath.string()), true);
 		}
-		});
+	});
 	server.run();
 	return 0;
 }
